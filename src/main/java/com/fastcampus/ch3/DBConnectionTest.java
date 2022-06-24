@@ -9,7 +9,7 @@ public class DBConnectionTest {
 
         // DB의 userid와 pwd를 알맞게 변경해야 함
         String DB_USER = "eun";
-        String DB_PASSWORD = "1234";
+        String DB_PASSWORD = "rlagydms0101";
 
         Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); // 데이터베이스의 연결을 얻는다.
         Statement stmt  = conn.createStatement(); // Statement를 생성한다.

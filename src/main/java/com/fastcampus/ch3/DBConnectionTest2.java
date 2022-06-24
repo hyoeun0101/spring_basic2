@@ -1,6 +1,5 @@
 package com.fastcampus.ch3;
 
-import org.junit.*;
 import org.springframework.context.*;
 import org.springframework.context.support.*;
 import org.springframework.jdbc.datasource.*;
@@ -8,17 +7,16 @@ import org.springframework.jdbc.datasource.*;
 import javax.sql.*;
 import java.sql.*;
 
-import static org.junit.Assert.*;
 
 public class DBConnectionTest2 {
-    @Test
-    public void jdbcConnectionTest() throws Exception {
-//        // 스키마의 이름(springbasic)이 다른 경우 알맞게 변경
+    public static void main(String[] args) throws Exception {
+        // 스키마의 이름(springbasic)이 다른 경우 알맞게 변경
 //        String DB_URL = "jdbc:mysql://localhost:3306/springbasic?useUnicode=true&characterEncoding=utf8";
 //
 //        // DB의 userid와 pwd를 알맞게 변경
-//        String DB_USER = "asdf";
-//        String DB_PASSWORD = "1234";
+        //set으로 하지말고 DriverManagerDataSource를 빈으로 등록하기
+//        String DB_USER = "eun";
+//        String DB_PASSWORD = "rlagydms0101";
 //        String DB_DRIVER = "com.mysql.jdbc.Driver";
 //
 //        DriverManagerDataSource ds = new DriverManagerDataSource();
