@@ -34,7 +34,6 @@ public User selectUser(String id) throws Exception{
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, id);
         ResultSet rs = pstmt.executeQuery(); //select
-
         if(rs.next()){
             User user = new User();
             user.setId(rs.getString(1));
@@ -117,6 +116,38 @@ public User selectUser(String id) throws Exception{
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
         pstmt.executeUpdate();
+    }
+
+    public int updateUser(User user) throws Exception{
+        Connection conn = ds.getConnection();
+        String sql = "update user_info set pwd=?, name=?, email=?,birth=?,sns=?,reg_date=? where id=?";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, user.getPwd());
+        pstmt.setString(2, user.getName());
+        pstmt.setString(3, user.getEmail());
+        pstmt.setDate(4, new java.sql.Date(user.getBirth().getTime()));
+        pstmt.setString(5,user.getSns());
+        pstmt.setTimestamp(6, new java.sql.Timestamp(user.getReg_date().getTime()));
+        pstmt.setString(7, user.getId());
+
+        int rowCnt = pstmt.executeUpdate();
+        return rowCnt;
+    }
+
+    @Test
+    public void updateUserTest() throws Exception{
+        deleteAll();
+        User user1 = new User("bbbb", "1234", "eun1", "aaa@naver.com", new Date(), "facebook", new Date());
+        insertUser(user1);
+
+        User user2 = new User("bbbb", "4321", "eun", "bbb@naver.com", new Date(), "facebook", new Date());
+        int rowCnt = updateUser(user2);
+
+        assertTrue(rowCnt==1);
+
+        User result = selectUser("bbbb");
+        assertTrue(user2.getPwd().equals(result.getPwd()));
     }
 
 
