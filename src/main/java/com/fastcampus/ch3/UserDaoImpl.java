@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+
 @Repository
 public class UserDaoImpl implements UserDao {
     @Autowired
@@ -148,7 +149,7 @@ public class UserDaoImpl implements UserDao {
 
         return rowCnt;
     }
-
+    @Override
     public void deleteAll() throws Exception {
         Connection conn = ds.getConnection();
 
