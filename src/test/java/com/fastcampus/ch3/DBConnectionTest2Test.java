@@ -16,6 +16,7 @@ import java.sql.Connection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -56,21 +57,21 @@ public User selectUser(String id) throws Exception{
         assertTrue(user.getId().equals("bbbb"));
     }
 
-
     public int insertUser(User user) throws Exception {
-        Connection conn = ds.getConnection();
-        String sql = "insert into user_info values (?,?,?,?,?,?,now());";
+            Connection conn = ds.getConnection();
 
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, user.getId());
-        pstmt.setString(2, user.getPwd());
-        pstmt.setString(3, user.getName());
-        pstmt.setString(4, user.getEmail());
-        pstmt.setDate(5, new java.sql.Date(user.getBirth().getTime()));
-        pstmt.setString(6, user.getSns());
+            String sql = "insert into user_info values (?,?,?,?,?,?,now());";
 
-        int rowCnt = pstmt.executeUpdate();
-        return rowCnt;
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, user.getId());
+            pstmt.setString(2, user.getPwd());
+            pstmt.setString(3, user.getName());
+            pstmt.setString(4, user.getEmail());
+            pstmt.setDate(5, new java.sql.Date(user.getBirth().getTime()));
+            pstmt.setString(6, user.getSns());
+
+            int rowCnt = pstmt.executeUpdate();
+            return rowCnt;
     }
     @Test
     public void insertUserTest() throws Exception {
@@ -79,6 +80,39 @@ public User selectUser(String id) throws Exception{
         int rowCnt = insertUser(user);
 
         assertTrue(rowCnt == 1);
+    }
+    @Test
+    public void transactionTest() throws Exception{
+        Connection conn=null;
+        try {
+            deleteAll();
+            conn = ds.getConnection();
+            conn.setAutoCommit(false);
+
+
+            String sql = "insert into user_info values (?,?,?,?,?,?,now());";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "qwerty");
+            pstmt.setString(2, "123456");
+            pstmt.setString(3, "aaa");
+            pstmt.setString(4, "aaa@naver.com");
+            pstmt.setDate(5, new java.sql.Date(new Date().getTime()));
+            pstmt.setString(6, "fb");
+
+            int rowCnt = pstmt.executeUpdate();
+
+            pstmt.setString(1,"qwerty");
+            rowCnt = pstmt.executeUpdate();//두번 insert!!
+
+            conn.commit();
+
+        } catch (Exception e) {
+            //예외 발생하면 롤백.
+            conn.rollback();
+            e.printStackTrace();
+        } finally {
+        }
     }
 
     public int deletUser(String id)throws Exception{
