@@ -1,6 +1,5 @@
 package com.fastcampus.ch3;
 
-import org.apache.taglibs.standard.tag.common.sql.DataSourceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
@@ -11,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 @Repository
-public class A1Dao {
+public class B1Dao {
     @Autowired
     DataSource ds;
 
